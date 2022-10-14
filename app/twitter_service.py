@@ -1,20 +1,19 @@
-path = '../'
+path = './'
 from datetime import datetime
 from typing import List
 
 import pandas as pd
 
-from musow_pipeline.conf import TOKEN as token
-from musow_pipeline.logreg_prediction import PredictPipeline
-from musow_pipeline.text_prediction import TextPrediction
-from musow_pipeline.twitter_pipeline import TwitterPipeline
+from .musow_pipeline.conf import TOKEN as token
+from .musow_pipeline.logreg_prediction import PredictPipeline
+from .musow_pipeline.twitter_pipeline import TwitterPipeline
 
 
 # descriptions training set 
-archive_desc_training = pd.read_pickle(path+'LOGREG_RELEVANCE/TRAINING_SETS/archive_desc_training_v4.pkl')
+archive_desc_training = pd.read_pickle('./TRAINING_SETS/archive_desc_training_v4.pkl')
 
 # twitter training set 
-twitter_training = pd.read_pickle(path+'LOGREG_RELEVANCE/TRAINING_SETS/twitter_training_v2_alt.pkl')
+twitter_training = pd.read_pickle('./TRAINING_SETS/twitter_training_v2_alt.pkl')
 
 # one time training on twitter
 twitter_training_model = PredictPipeline.train(twitter_training, 'tweet', 'Target', 10, 1000, 'twitter_pipeline_june_2022', path)

@@ -1,4 +1,4 @@
-from musow_pipeline.logreg_functions import *
+from .logreg_functions import *
 
 class PredictPipeline(object):
     #keywords to remove from URL and Title strings at prediction stages

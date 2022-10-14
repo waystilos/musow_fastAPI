@@ -10,7 +10,7 @@ import requests
 #cleaning
 import emoji
 #logreg 
-from musow_pipeline.logreg_prediction import *
+from .logreg_prediction import *
 
 ## These functions cover the use of twitter to search for new resources and evaluate them using the logistic regression pipeline in logreg_prediction.py
 

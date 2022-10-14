@@ -1,4 +1,4 @@
-path = '../'
+path = './'
 # classifier
 import pandas as pd
 # web scraping
@@ -9,10 +9,10 @@ import trafilatura
 from transformers import pipeline
 from urllib.parse import urlparse
 #logreg
-from musow_pipeline.logreg_prediction import *
+from .logreg_prediction import *
 
 #load positives from description training set to check for matches 
-checklist = pd.read_pickle(path+'LOGREG_RELEVANCE/TRAINING_SETS/archive_desc_training_v4.pkl')
+checklist = pd.read_pickle(path + 'TRAINING_SETS/archive_desc_training_v4.pkl')
 checklist = checklist.loc[checklist['Target'] == 1]
 checklist = checklist['URL'].to_list()
 parsed = []
