@@ -16,7 +16,7 @@ archive_desc_training = pd.read_pickle('app/TRAINING_SETS/archive_desc_training_
 twitter_training = pd.read_pickle('app/TRAINING_SETS/twitter_training_v2_alt.pkl')
 
 def get_twitter_response(response):
-    tweets = TwitterPipeline.search_custom(response["token"], response["word"], response["start"].strftime("%Y-%m-%dT%H:%M:%SZ"), response["end"].strftime("%Y-%m-%dT%H:%M:%SZ"), 500, 500)
+    tweets = TwitterPipeline.search_custom(response["token"], [response["word"]], [response["start"].isoformat("T") + "Z"], [response["end"].isoformat("T") + "Z"], 500, 500)
     #load all search results into a single dataframe 
     tweets_to_classify = TwitterPipeline.classify_tweets('app/TWITTER_SEARCHES/RAW_SEARCHES/', f'{tweets[0][-16:]}.pkl')
     return tweets_to_classify 
