@@ -19,4 +19,4 @@ def read_item(word: str, start: datetime, end: datetime, token: str):
     twit_response = get_twitter_response(query_response)
 
     # TODO: Need to test to see if this converts dataframe to JSON
-    return Response(twit_response.to_json(orient="records"), media_type="application/json")
+    return Response(twit_response.to_json(orient="split"), media_type="application/json")
