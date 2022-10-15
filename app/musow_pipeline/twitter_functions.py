@@ -111,7 +111,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
     total_tweets = 0
 
     # Create file
-    csvFile = open(f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', "a", newline="", encoding='utf-8')
+    csvFile = open(f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', "a", newline="", encoding='utf-8')
     csvWriter = csv.writer(csvFile)
     csvWriter.writerow(['user', 'tweet id', 'created_at', 'lang', 'like_count', 'quote_count', 'reply_count','retweet_count','tweet', 'URL'])
     csvFile.close()

@@ -12,7 +12,7 @@ def time_root():
     return datetime.utcnow()
 
 
-@app.get("/search/")
+@app.get("/search")
 def read_item(word: str, start: datetime, end: datetime, token: str):
     query_response = {"word": word, "start": start, "end": end, "token": token}
     # call twit service to get back response
