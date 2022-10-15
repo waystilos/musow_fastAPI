@@ -120,12 +120,12 @@ def scrape_links(link_list, pred_df, filename):
     #check if an additional DF for rejoining was passed as parameter 
     if pred_df is not None:
         scrapes_preds = pd.merge(pred_df, links, on='URL')
-        scrapes_preds.to_pickle(f'{path}LOGREG_RELEVANCE/SCRAPES/{filename}.pkl')
+        scrapes_preds.to_pickle(f'app/LOGREG_RELEVANCE/SCRAPES/{filename}.pkl')
         print('Total links scraped:', len(scrapes_preds))
         return scrapes_preds
     else:
         scrapes_preds = links
-        scrapes_preds.to_pickle(f'{path}LOGREG_RELEVANCE/SCRAPES/{filename}.pkl')
+        scrapes_preds.to_pickle(f'app/LOGREG_RELEVANCE/SCRAPES/{filename}.pkl')
         print('Total links scraped:', len(scrapes_preds))
         return scrapes_preds
     
@@ -166,5 +166,5 @@ def resource_predictions(path, filename, p_input, p_feature, score, savefile):
     preds.loc[preds['URL'].str.contains('|'.join(parsed), case=False, regex=True), ['Match']] = 'training set match'
     #sort by score, descending
     preds = preds.sort_values(by='Score', ascending=False).reset_index(drop=True)
-    preds.to_csv(f'{path}LOGREG_RELEVANCE/PREDICTIONS/{savefile}.csv')
+    preds.to_csv(f'app/LOGREG_RELEVANCE/PREDICTIONS/{savefile}.csv')
     return preds

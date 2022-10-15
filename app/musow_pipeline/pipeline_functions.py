@@ -86,8 +86,7 @@ def lr_predict(path, filename, p_input, p_feature):
     path: str
         parent folder
     """
-    export_model = f'{path}LOGREG_RELEVANCE/MODELS/{filename}_model.pkl'
-    #export_vectorizer = f'{path}LOGREG_RELEVANCE/MODELS/{filename}_vectorizer.pkl'
+    export_model = f'app/LOGREG_RELEVANCE/MODELS/{filename}_model.pkl'
     model = pickle.load(open(export_model, 'rb'))
     #tfidf_transformer = pickle.load(open(export_vectorizer, 'rb'))
 
@@ -200,7 +199,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
     total_tweets = 0
 
     # Create file
-    csvFile = open(f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', "a", newline="", encoding='utf-8')
+    csvFile = open(f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', "a", newline="", encoding='utf-8')
     csvWriter = csv.writer(csvFile)
     csvWriter.writerow(['user', 'created_at', 'lang', 'like_count', 'quote_count', 'reply_count','retweet_count','tweet', 'URL'])
     csvFile.close()
@@ -228,7 +227,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
                 print("Next Token: ", next_token)
                 if result_count is not None and result_count > 0 and next_token is not None:
                     print("Start Date: ", start_list[i])
-                    append_to_csv(json_response, f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
+                    append_to_csv(json_response, f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
                     count += result_count
                     total_tweets += result_count
                     print(f"Total # of Tweets added for '{keyword}':", total_tweets)
@@ -239,7 +238,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
                 if result_count is not None and result_count > 0:
                     print("-------------------")
                     print("Start Date: ", start_list[i])
-                    append_to_csv(json_response, f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
+                    append_to_csv(json_response, f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
                     count += result_count
                     total_tweets += result_count
                     print(f"Total # of Tweets added for '{keyword}':", total_tweets)
@@ -252,7 +251,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
             time.sleep(5)
     print("Total number of results:", total_tweets)
 
-    df = pd.read_csv(f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', keep_default_na=False, dtype={"user": "string", "lang": "string", "tweet": "string", "URL": "string"})
+    df = pd.read_csv(f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', keep_default_na=False, dtype={"user": "string", "lang": "string", "tweet": "string", "URL": "string"})
 
     # clean the tweet from meentions, hashtags, emojis
     df['tweet'].replace( { r"@[A-Za-z0-9_]+": '' }, inplace= True, regex = True)
@@ -267,7 +266,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
     df['Search KW'] = keyword
 
     #pickle df for reuse
-    df.to_pickle(f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.pkl')
+    df.to_pickle(f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.pkl')
 
 ## Twitter search time options - weekly or user specified time input
 
@@ -449,7 +448,7 @@ def scrape_links(link_list, pred_df, filename):
     links = links.fillna('None')
     links = links[~links.Description.str.contains('|'.join(discard))]
     twitter_scrapes_preds = pd.merge(pred_df, links, on='URL')
-    twitter_scrapes_preds.to_pickle(f'{path}LOGREG_RELEVANCE/SCRAPES/{filename}.pkl')
+    twitter_scrapes_preds.to_pickle(f'app/LOGREG_RELEVANCE/SCRAPES/{filename}.pkl')
     print(len(twitter_scrapes_preds))
     return twitter_scrapes_preds
 
@@ -521,5 +520,5 @@ def resource_predictions(path, filename, p_input, p_feature, score, savefile):
     preds = preds[~preds.URL.str.contains('|'.join(discard))]
     preds = preds[~preds.Title.str.contains('|'.join(discard))]
     preds = preds.sort_values(by='Score', ascending=False).reset_index(drop=True)
-    preds.to_csv(f'{path}LOGREG_RELEVANCE/PREDICTIONS/{savefile}.csv')
+    preds.to_csv(f'app/LOGREG_RELEVANCE/PREDICTIONS/{savefile}.csv')
     return preds

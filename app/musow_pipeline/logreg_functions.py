@@ -66,7 +66,7 @@ def lr_predict(path, filename, p_input, p_feature):
     """
     
     #load model 
-    export_model = f'{path}LOGREG_RELEVANCE/MODELS/{filename}_model.pkl'
+    export_model = f'app/LOGREG_RELEVANCE/MODELS/{filename}_model.pkl'
     model = pickle.load(open(export_model, 'rb'))
     
     #predict and score 

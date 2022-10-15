@@ -139,7 +139,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
                 print("Next Token: ", next_token)
                 if result_count is not None and result_count > 0 and next_token is not None:
                     print("Start Date: ", start_list[i])
-                    append_to_csv(json_response, f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
+                    append_to_csv(json_response, f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
                     count += result_count
                     total_tweets += result_count
                     print(f"Total # of Tweets added for '{keyword}':", total_tweets)
@@ -150,7 +150,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
                 if result_count is not None and result_count > 0:
                     print("-------------------")
                     print("Start Date: ", start_list[i])
-                    append_to_csv(json_response, f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
+                    append_to_csv(json_response, f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv')
                     count += result_count
                     total_tweets += result_count
                     print(f"Total # of Tweets added for '{keyword}':", total_tweets)
@@ -163,7 +163,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
             time.sleep(5)
     print("Total number of results:", total_tweets)
 
-    df = pd.read_csv(f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', keep_default_na=False, dtype={"user": "string", "lang": "string", "tweet": "string", "URL": "string"})
+    df = pd.read_csv(f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.csv', keep_default_na=False, dtype={"user": "string", "lang": "string", "tweet": "string", "URL": "string"})
 
     # clean the tweet from meentions, hashtags, emojis
     df['tweet'].replace( { r"@[A-Za-z0-9_]+": '' }, inplace= True, regex = True)
@@ -178,7 +178,7 @@ def twitter_search(token, keyword, start, end, mresults, mcount, file_name):
     df['Search KW'] = keyword
 
     #pickle df for reuse
-    df.to_pickle(f'{path}TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.pkl')
+    df.to_pickle(f'app/TWITTER_SEARCHES/RAW_SEARCHES/{file_name}.pkl')
 
 ## Twitter search options - two functions (weekly or user specified time input) that call the above primary search function and return a list of filenames 
 
