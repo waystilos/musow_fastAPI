@@ -1,4 +1,4 @@
-from musow_pipeline.text_functions import *
+from .text_functions import *
 
 class TextPrediction(object):
 

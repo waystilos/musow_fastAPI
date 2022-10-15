@@ -1,4 +1,4 @@
-from musow_pipeline.twitter_functions import *
+from .twitter_functions import *
 
 class TwitterPipeline(object):
     def search_weekly(token, keyword_list, max_results, max_counts):
