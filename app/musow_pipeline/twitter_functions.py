@@ -11,6 +11,8 @@ import requests
 import emoji
 #logreg 
 from .logreg_prediction import *
+#unwind URLs
+import urlexpander
 
 ## These functions cover the use of twitter to search for new resources and evaluate them using the logistic regression pipeline in logreg_prediction.py
 
@@ -241,7 +243,7 @@ def twitter_search_custom (token, keyword_list, start_list, end_list, max_result
         filename = re.sub(r"isretweet", '', filename)
         twitter_search(token, k, start, end, mresults, mcount, filename)
         filenames.append(filename)
-    return filenames
+    return filenames[0]
 
 ## Twitter preparation - function to load all tweets from search options and create a single dataframe for prediction, lets user know how many tweets to process 
 
@@ -298,6 +300,10 @@ def twitter_predictions(path, filename, p_input, p_feature, score):
     preds = preds[~preds.URL.str.contains('|'.join(PredictPipeline.whitelist))]
     #check for multiple URls, create dupes if needed 
     preds = preds.assign(URL = preds.URL.str.split(', ')).explode('URL', ignore_index=True)
+    #unwind URLs
+    for i in preds['URL']:
+        if urlexpander.is_short(i) == True:
+            preds['URL'] = preds['URL'].replace([i], urlexpander.expand(i))
     #sort results by score, descending
     preds = preds.sort_values(by='Score', ascending=False).reset_index(drop=True)
     #drop unneeded columns 
