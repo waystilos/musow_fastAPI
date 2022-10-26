@@ -1,4 +1,4 @@
-path = './'
+path = '../'
 # classifier
 import pandas as pd
 # web scraping
@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 from .logreg_prediction import *
 
 #load positives from description training set to check for matches 
-checklist = pd.read_pickle(path + 'TRAINING_SETS/archive_desc_training_v4.pkl')
+checklist = pd.read_pickle(path+'LOGREG_RELEVANCE/TRAINING_SETS/archive_desc_training_v4.pkl')
 checklist = checklist.loc[checklist['Target'] == 1]
 checklist = checklist['URL'].to_list()
 parsed = []
@@ -156,15 +156,19 @@ def resource_predictions(path, filename, p_input, p_feature, score, savefile):
     #clean DF
     preds = preds.drop_duplicates(['Description'], keep='last')
     preds = preds.loc[preds['Description'] != '']
-    #filter by score parameter
-    preds = preds.loc[preds['Prediction'] == score]
     #discard based on variables
     preds = preds[~preds.URL.str.contains('|'.join(PredictPipeline.url_discard))]
     preds = preds[~preds.URL.str.contains('|'.join(PredictPipeline.whitelist))]
     preds = preds[~preds.Title.str.contains('|'.join(PredictPipeline.title_discard))]
     #check if results exist in training set and add a note
     preds.loc[preds['URL'].str.contains('|'.join(parsed), case=False, regex=True), ['Match']] = 'training set match'
-    #sort by score, descending
+    #sort by score, descending, reorder
     preds = preds.sort_values(by='Score', ascending=False).reset_index(drop=True)
+    preds = preds.reindex(columns=['Match', 'tweet', 'Title', 'Description', 'URL', 'Search KW', 'Score', 'Probability', 'Input Length', 
+        'tweet date', 'user', 'tweet id', 'Prediction'])
+    #filter by score parameter, update negs to pos if training match
+    preds.loc[preds['Match'] == 'training set match', 'Prediction'] = 1
+    preds = preds.loc[preds['Prediction'] == score]
+    preds = preds.reset_index(drop=True)
     preds.to_csv(f'app/LOGREG_RELEVANCE/PREDICTIONS/{savefile}.csv')
     return preds
